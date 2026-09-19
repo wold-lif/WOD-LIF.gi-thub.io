@@ -1,1 +1,1490 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JOGO DA LIBERDADE</title>
 
+<style>
+:root{
+  --pink:#e91e63;
+  --dark:#171017;
+  --soft:#fff1f6;
+  --white:#fff;
+  --gray:#6b6268;
+  --line:#eadde3;
+  --green:#138a55
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#faf8fa;
+  color:var(--dark)
+}
+
+header{
+  background:linear-gradient(135deg,#c2185b,#f06292);
+  color:#fff;
+  padding:18px 16px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 12px #0002
+}
+
+.top{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px
+}
+
+.logo{
+  font-weight:900;
+  font-size:21px
+}
+
+.tag{
+  font-size:12px;
+  opacity:.9
+}
+
+nav{
+  max-width:1100px;
+  margin:12px auto 0;
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding-bottom:2px
+}
+
+nav button{
+  white-space:nowrap;
+  border:1px solid #ffffff55;
+  background:#ffffff18;
+  color:#fff;
+  padding:9px 12px;
+  border-radius:20px;
+  font-weight:700
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:18px 14px 60px
+}
+
+.view{
+  display:none
+}
+
+.view.active{
+  display:block
+}
+
+.hero{
+  background:linear-gradient(135deg,#fff0f6,#fff);
+  border:1px solid #f5c8d9;
+  border-radius:22px;
+  padding:24px;
+  margin-bottom:18px
+}
+
+.hero h1{
+  font-size:34px;
+  margin:0 0 8px
+}
+
+.hero p{
+  color:var(--gray);
+  line-height:1.5
+}
+
+.actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap
+}
+
+button,.btn{
+  border:0;
+  border-radius:12px;
+  padding:11px 15px;
+  font-weight:800;
+  cursor:pointer
+}
+
+.primary{
+  background:var(--pink);
+  color:#fff
+}
+
+.secondary{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--dark)
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:15px;
+  box-shadow:0 3px 12px #00000008
+}
+
+.card h3{
+  margin:8px 0
+}
+
+.card p{
+  color:var(--gray);
+  margin:6px 0
+}
+
+.product img{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  border-radius:12px;
+  background:#eee
+}
+
+.price{
+  font-size:20px;
+  font-weight:900;
+  color:var(--pink)
+}
+
+label{
+  display:block;
+  font-weight:800;
+  font-size:13px;
+  margin:12px 0 6px
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #dccfd6;
+  border-radius:10px;
+  background:#fff;
+  font-size:15px
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical
+}
+
+.form{
+  max-width:700px
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#ffe1ec;
+  color:#a5124c;
+  font-size:12px;
+  font-weight:800
+}
+
+.reward{
+  border-left:5px solid var(--green)
+}
+
+.danger{
+  background:#fff0f0;
+  color:#a00
+}
+
+.stat{
+  font-size:27px;
+  font-weight:900
+}
+
+.muted{
+  color:var(--gray);
+  font-size:13px
+}
+
+.empty{
+  text-align:center;
+  padding:35px;
+  color:var(--gray)
+}
+
+footer{
+  background:#171017;
+  color:#fff;
+  padding:25px 14px;
+  text-align:center
+}
+
+.small{
+  font-size:12px;
+  color:#bdb4bb
+}
+
+@media(max-width:600px){
+  .row{
+    grid-template-columns:1fr
+  }
+
+  .hero h1{
+    font-size:28px
+  }
+
+  .product img{
+    height:160px
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="top">
+
+<div>
+<div class="logo">JOGO DA LIBERDADE</div>
+<div class="tag">Comércio • Oportunidades • Comunidade</div>
+</div>
+
+</div>
+
+<nav>
+
+<button onclick="show('home')">Início</button>
+
+<button onclick="show('catalogo')">
+Produtos
+</button>
+
+<button onclick="show('vender')">
+Vender
+</button>
+
+<button onclick="show('investir')">
+Investir
+</button>
+
+<button onclick="show('recompensas')">
+Divulgar
+</button>
+
+<button onclick="show('painel')">
+Meu painel
+</button>
+
+</nav>
+
+</header>
+
+
+<main>
+
+
+<!-- INÍCIO -->
+
+<section id="home" class="view active">
+
+<div class="hero">
+
+<span class="badge">
+JOGO DA LIBERDADE
+</span>
+
+<h1>
+Transforme produtos, divulgação e oportunidades em movimento.
+</h1>
+
+<p>
+Uma plataforma para vendedores apresentarem os seus produtos,
+clientes encontrarem oportunidades e participantes acompanharem
+as suas atividades.
+</p>
+
+<div class="actions">
+
+<button
+class="primary"
+onclick="show('catalogo')">
+Ver produtos
+</button>
+
+<button
+class="secondary"
+onclick="show('vender')">
+Cadastrar produto
+</button>
+
+<button
+class="secondary"
+onclick="show('recompensas')">
+Participar da divulgação
+</button>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="stat" id="homeProducts">
+0
+</div>
+
+<div class="muted">
+Produtos cadastrados
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="stat" id="homeSellers">
+0
+</div>
+
+<div class="muted">
+Vendedores
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="stat">
+100 Kz
+</div>
+
+<div class="muted">
+Recompensa diária
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- CATÁLOGO -->
+
+<section id="catalogo" class="view">
+
+<div class="hero">
+
+<h1>
+Catálogo
+</h1>
+
+<p>
+Encontre produtos publicados pelos vendedores.
+</p>
+
+<div class="row">
+
+<input
+id="search"
+placeholder="Pesquisar produto..."
+oninput="renderProducts()">
+
+<select
+id="catFilter"
+onchange="renderProducts()">
+
+<option value="">
+Todas as categorias
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div id="products" class="grid">
+</div>
+
+</section>
+
+
+
+<!-- VENDER -->
+
+<section id="vender" class="view">
+
+<div class="hero">
+
+<h1>
+Vender na plataforma
+</h1>
+
+<p>
+Cadastre o vendedor e publique o produto.
+</p>
+
+</div>
+
+
+<form id="productForm" class="card form">
+
+<h2>
+Novo produto
+</h2>
+
+
+<div class="row">
+
+<div>
+
+<label>
+Nome do vendedor
+</label>
+
+<input
+id="seller"
+required>
+
+</div>
+
+
+<div>
+
+<label>
+WhatsApp
+</label>
+
+<input
+id="phone"
+placeholder="244..."
+required>
+
+</div>
+
+</div>
+
+
+<label>
+Nome do produto
+</label>
+
+<input
+id="pname"
+required>
+
+
+<div class="row">
+
+<div>
+
+<label>
+Preço (Kz)
+</label>
+
+<input
+id="price"
+type="number"
+min="0"
+required>
+
+</div>
+
+
+<div>
+
+<label>
+Categoria
+</label>
+
+<select
+id="category"
+required>
+
+<option value="">
+Escolha
+</option>
+
+<option>
+Móveis
+</option>
+
+<option>
+Eletrônicos
+</option>
+
+<option>
+Moda
+</option>
+
+<option>
+Alimentação
+</option>
+
+<option>
+Serviços
+</option>
+
+<option>
+Outros
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<label>
+Descrição
+</label>
+
+<textarea
+id="desc"
+placeholder="Descreva o produto...">
+</textarea>
+
+
+<label>
+Fotografia
+</label>
+
+<input
+id="photo"
+type="file"
+accept="image/*">
+
+
+<div
+id="preview"
+style="display:none">
+
+<img
+id="previewImg"
+style="max-width:100%;max-height:220px;border-radius:10px">
+
+</div>
+
+
+<br>
+
+<button
+class="primary"
+type="submit">
+
+Publicar produto
+
+</button>
+
+</form>
+
+</section>
+
+
+
+<!-- INVESTIR -->
+
+<section id="investir" class="view">
+
+<div class="hero">
+
+<h1>
+Quero investir
+</h1>
+
+<p>
+Registre o seu interesse para a equipa entrar em contacto.
+</p>
+
+</div>
+
+
+<form
+id="investForm"
+class="card form">
+
+<label>
+Nome
+</label>
+
+<input
+id="invName"
+required>
+
+
+<label>
+WhatsApp
+</label>
+
+<input
+id="invPhone"
+required>
+
+
+<label>
+Valor que pretende investir (Kz)
+</label>
+
+<input
+id="invValue"
+type="number"
+min="0"
+required>
+
+
+<label>
+Mensagem
+</label>
+
+<textarea
+id="invMsg"
+placeholder="O que gostaria de saber?">
+</textarea>
+
+
+<button
+class="primary">
+
+Enviar interesse
+
+</button>
+
+</form>
+
+</section>
+
+
+
+<!-- DIVULGAÇÃO -->
+
+<section id="recompensas" class="view">
+
+<div class="hero">
+
+<h1>
+Divulgue e acompanhe
+</h1>
+
+<p>
+A regra planejada é:
+<b>
+5 partilhas por dia → 100 Kz
+</b>
+após validação das ações exigidas.
+</p>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card reward">
+
+<h3>
+Hoje
+</h3>
+
+<div class="stat">
+
+<span id="shares">
+0
+</span>
+
+/5
+
+</div>
+
+<p>
+Partilhas registadas.
+</p>
+
+<button
+class="primary"
+onclick="shareProduct()">
+
+Partilhar
+
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>
+Recompensa
+</h3>
+
+<div
+class="stat"
+id="reward">
+
+0 Kz
+
+</div>
+
+<p>
+Recompensa do dia.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- PAINEL -->
+
+<section id="painel" class="view">
+
+<div class="hero">
+
+<h1>
+Meu painel
+</h1>
+
+<p>
+Resumo dos dados da plataforma.
+</p>
+
+</div>
+
+
+<div class="grid">
+
+
+<div class="card">
+
+<div
+class="stat"
+id="stProducts">
+0
+</div>
+
+<div>
+Produtos
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div
+class="stat"
+id="stInvest">
+0
+</div>
+
+<div>
+Interesses de investimento
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div
+class="stat"
+id="stShares">
+0
+</div>
+
+<div>
+Partilhas
+</div>
+
+</div>
+
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:14px">
+
+<h2>
+Últimos produtos
+</h2>
+
+<div id="panelProducts">
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:14px">
+
+<h2>
+Pagamentos
+</h2>
+
+<p>
+Os pagamentos da plataforma serão realizados através de:
+</p>
+
+<ul>
+
+<li>
+Transferência bancária
+</li>
+
+<li>
+Depósito bancário
+</li>
+
+<li>
+Outros meios bancários autorizados pela plataforma
+</li>
+
+</ul>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:14px">
+
+<button
+class="secondary danger"
+onclick="clearData()">
+
+Limpar dados deste navegador
+
+</button>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<b>
+JOGO DA LIBERDADE
+</b>
+
+<br>
+
+<span class="small">
+Comércio • Oportunidades • Comunidade
+</span>
+
+</footer>
+
+
+
+<script>
+
+const CONFIG={
+
+nome:"JOGO DA LIBERDADE",
+
+recompensa:100,
+
+acoes:5
+
+};
+
+
+let data=JSON.parse(
+
+localStorage.getItem("JDL_DATA")
+
+||'{"products":[],"investors":[],"shares":0}'
+
+);
+
+
+function save(){
+
+localStorage.setItem(
+"JDL_DATA",
+JSON.stringify(data)
+);
+
+updateAll();
+
+}
+
+
+function show(id){
+
+document
+.querySelectorAll(".view")
+.forEach(x=>x.classList.remove("active"));
+
+const el=document.getElementById(id);
+
+if(el)
+el.classList.add("active");
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+if(id==="catalogo")
+renderProducts();
+
+if(id==="painel")
+renderPanel();
+
+}
+
+
+function money(n){
+
+return Number(n||0)
+.toLocaleString("pt-AO")+" Kz";
+
+}
+
+
+
+document
+.getElementById("photo")
+.addEventListener("change",function(e){
+
+const f=e.target.files[0];
+
+if(!f)
+return;
+
+const r=new FileReader();
+
+r.onload=function(){
+
+document.getElementById("preview")
+.style.display="block";
+
+document.getElementById("previewImg")
+.src=r.result;
+
+};
+
+r.readAsDataURL(f);
+
+});
+
+
+
+document
+.getElementById("productForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const file=
+document.getElementById("photo").files[0];
+
+
+const finish=function(img){
+
+data.products.unshift({
+
+id:Date.now(),
+
+seller:seller.value.trim(),
+
+phone:phone.value.trim(),
+
+name:pname.value.trim(),
+
+price:Number(price.value),
+
+category:category.value,
+
+desc:desc.value.trim(),
+
+image:img||""
+
+});
+
+
+save();
+
+e.target.reset();
+
+document.getElementById("preview")
+.style.display="none";
+
+alert(
+"Produto publicado com sucesso!"
+);
+
+show("catalogo");
+
+};
+
+
+if(file){
+
+const r=new FileReader();
+
+r.onload=function(){
+
+finish(r.result);
+
+};
+
+r.readAsDataURL(file);
+
+}else{
+
+finish("");
+
+}
+
+});
+
+
+
+document
+.getElementById("investForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+data.investors.unshift({
+
+name:invName.value,
+
+phone:invPhone.value,
+
+value:Number(invValue.value),
+
+msg:invMsg.value,
+
+date:new Date().toLocaleString("pt-AO")
+
+});
+
+save();
+
+e.target.reset();
+
+alert(
+"Interesse registado com sucesso!"
+);
+
+show("painel");
+
+});
+
+
+
+function renderProducts(){
+
+const q=
+(document.getElementById("search")?.value||"")
+.toLowerCase();
+
+const cat=
+document.getElementById("catFilter")?.value||"";
+
+
+const cats=[
+...new Set(
+data.products.map(p=>p.category)
+)
+].filter(Boolean);
+
+
+if(document.getElementById("catFilter")){
+
+document.getElementById("catFilter").innerHTML=
+
+'<option value="">Todas as categorias</option>'+
+
+cats.map(c=>
+
+`<option ${
+c===cat?"selected":""
+}>${c}</option>`
+
+).join("");
+
+}
+
+
+const list=data.products.filter(p=>
+
+(!q ||
+
+(p.name+" "+p.desc+" "+p.seller)
+.toLowerCase()
+.includes(q))
+
+&&
+
+(!cat || p.category===cat)
+
+);
+
+
+const box=
+document.getElementById("products");
+
+
+if(!list.length){
+
+box.innerHTML=
+'<div class="empty">Ainda não há produtos publicados.</div>';
+
+return;
+
+}
+
+
+box.innerHTML=list.map(p=>`
+
+<div class="card product">
+
+${p.image
+
+?
+
+`<img src="${p.image}">`
+
+:
+
+`<div style="
+height:190px;
+border-radius:12px;
+background:#eee;
+display:grid;
+place-items:center;
+color:#888">
+
+Sem fotografia
+
+</div>`
+
+}
+
+
+<span class="badge">
+${esc(p.category)}
+</span>
+
+
+<h3>
+${esc(p.name)}
+</h3>
+
+
+<div class="price">
+${money(p.price)}
+</div>
+
+
+<p>
+${esc(p.desc||"Sem descrição.")}
+</p>
+
+
+<p class="muted">
+Vendedor: ${esc(p.seller)}
+</p>
+
+
+<button
+class="primary"
+onclick="contact('${escAttr(p.phone)}','${escAttr(p.name)}')">
+
+Contactar vendedor
+
+</button>
+
+
+</div>
+
+`).join("");
+
+}
+
+
+
+function contact(phone,name){
+
+const n=
+phone.replace(/\D/g,"");
+
+
+const url=
+"https://wa.me/"+n+
+
+"?text="+
+
+encodeURIComponent(
+
+"Olá! Vi o produto \""+
+name+
+"\" no JOGO DA LIBERDADE e gostaria de saber mais."
+
+);
+
+
+window.open(
+url,
+"_blank"
+);
+
+}
+
+
+
+function shareProduct(){
+
+if(data.products.length){
+
+const p=data.products[0];
+
+
+if(navigator.share){
+
+navigator.share({
+
+title:p.name,
+
+text:
+"Confira este produto no JOGO DA LIBERDADE",
+
+url:location.href
+
+}).catch(()=>{});
+
+}
+
+else if(navigator.clipboard){
+
+navigator.clipboard.writeText(
+location.href
+);
+
+}
+
+}
+
+
+data.shares=
+Math.min(
+5,
+data.shares+1
+);
+
+save();
+
+}
+
+
+
+function updateAll(){
+
+document.getElementById("homeProducts")
+.textContent=
+data.products.length;
+
+
+document.getElementById("homeSellers")
+.textContent=
+
+new Set(
+data.products.map(p=>p.seller)
+).size;
+
+
+document.getElementById("shares")
+.textContent=
+data.shares;
+
+
+document.getElementById("reward")
+.textContent=
+
+(data.shares>=CONFIG.acoes
+?CONFIG.recompensa
+:0)+" Kz";
+
+
+document.getElementById("stProducts")
+.textContent=
+data.products.length;
+
+
+document.getElementById("stInvest")
+.textContent=
+data.investors.length;
+
+
+document.getElementById("stShares")
+.textContent=
+data.shares;
+
+
+renderPanel();
+
+}
+
+
+
+function renderPanel(){
+
+const box=
+document.getElementById("panelProducts");
+
+if(!box)
+return;
+
+
+box.innerHTML=
+
+data.products
+.slice(0,8)
+.map(p=>`
+
+<div
+style="
+padding:10px 0;
+border-bottom:1px solid #eee">
+
+<b>
+${esc(p.name)}
+</b>
+
+—
+
+${money(p.price)}
+
+<br>
+
+<span class="muted">
+
+${esc(p.seller)}
+•
+
+${esc(p.category)}
+
+</span>
+
+</div>
+
+`)
+.join("")
+
+||
+
+'<p class="muted">
+Nenhum produto.
+</p>';
+
+}
+
+
+
+function esc(s){
+
+return String(s||"")
+.replace(
+/[&<>"']/g,
+
+function(m){
+
+return {
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#39;"
+
+}[m];
+
+});
+
+}
+
+
+
+function escAttr(s){
+
+return String(s||"")
+.replace(/\\/g,"\\\\")
+.replace(/'/g,"\\'");
+
+}
+
+
+
+function clearData(){
+
+if(confirm(
+"Apagar todos os dados deste navegador?"
+)){
+
+localStorage.removeItem(
+"JDL_DATA"
+);
+
+location.reload();
+
+}
+
+}
+
+
+updateAll();
+
+</script>
+
+</body>
+</html>
+Claro, Sócio. Sem mandar abrir outro lugar. Vou colocar o código diretamente aqui para você copiar e colar no index.html do GitHub.
+HTML
+É este código que você copia para o index.html.
