@@ -1,1 +1,1479 @@
 
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jogo da Liberdade</title>
+
+<style>
+:root{
+  --rosa:#e91e63;
+  --rosa2:#ff4f8b;
+  --bg:#fff6fa;
+  --texto:#24151d;
+  --card:#fff;
+  --muted:#75656d;
+  --borda:#f0d7e1;
+  --ok:#16834b;
+  --erro:#c62828;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--texto);
+}
+
+header{
+  background:linear-gradient(135deg,var(--rosa),var(--rosa2));
+  color:#fff;
+  padding:18px 16px;
+  position:sticky;
+  top:0;
+  z-index:10;
+  box-shadow:0 3px 12px #0002;
+}
+
+.top{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.brand{
+  font-size:22px;
+  font-weight:800;
+}
+
+.tag{
+  font-size:12px;
+  opacity:.9;
+}
+
+nav{
+  max-width:1100px;
+  margin:10px auto 0;
+  display:flex;
+  gap:7px;
+  overflow:auto;
+}
+
+nav button{
+  white-space:nowrap;
+}
+
+button,.btn{
+  border:0;
+  border-radius:10px;
+  padding:11px 14px;
+  background:var(--rosa);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#fff;
+  color:var(--rosa);
+  border:1px solid var(--borda);
+}
+
+button.dark{
+  background:#33242b;
+}
+
+button:active{
+  transform:scale(.98);
+}
+
+main{
+  max-width:1100px;
+  margin:18px auto;
+  padding:0 14px;
+}
+
+.hero{
+  background:#fff;
+  border:1px solid var(--borda);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 6px 22px #9b31531a;
+}
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:30px;
+}
+
+.hero p{
+  margin:6px 0;
+  color:var(--muted);
+}
+
+.search{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+.search input{
+  flex:1;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--borda);
+  border-radius:10px;
+  background:#fff;
+  font:inherit;
+}
+
+label{
+  display:block;
+  font-weight:700;
+  font-size:13px;
+  margin:12px 0 6px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--borda);
+  border-radius:15px;
+  padding:14px;
+  box-shadow:0 4px 16px #9b315312;
+}
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:11px;
+  background:#f8e8ef;
+}
+
+.price{
+  font-size:19px;
+  font-weight:800;
+  color:var(--rosa);
+  margin:7px 0;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.panel{
+  background:#fff;
+  border:1px solid var(--borda);
+  border-radius:16px;
+  padding:18px;
+  margin-top:16px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+#status{
+  position:fixed;
+  right:12px;
+  bottom:12px;
+  max-width:330px;
+  background:#33242b;
+  color:#fff;
+  padding:12px 14px;
+  border-radius:12px;
+  display:none;
+  z-index:50;
+}
+
+.ok{
+  color:var(--ok);
+}
+
+.err{
+  color:var(--erro);
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#fde3ed;
+  color:#9d174d;
+  font-size:12px;
+  font-weight:700;
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@media(max-width:600px){
+  .top{
+    align-items:flex-start;
+  }
+
+  .hero h1{
+    font-size:24px;
+  }
+
+  .search{
+    flex-direction:column;
+  }
+
+  .search button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="top">
+
+<div>
+<div class="brand" id="brandName"></div>
+<div class="tag" id="brandTag"></div>
+</div>
+
+<button class="secondary" onclick="showPage('inicio')">
+Início
+</button>
+
+</div>
+
+<nav>
+
+<button onclick="showPage('catalogo')">
+Catálogo
+</button>
+
+<button onclick="showPage('vendedor')">
+Cadastrar produto
+</button>
+
+<button onclick="showPage('investidor')">
+Investimento
+</button>
+
+<button onclick="showPage('divulgacao')">
+Divulgação
+</button>
+
+<button onclick="showPage('painel')">
+Painel
+</button>
+
+</nav>
+
+</header>
+
+<main>
+
+<section id="inicio" class="page">
+
+<div class="hero">
+
+<h1>
+Transforme ideias em oportunidades.
+</h1>
+
+<p>
+Uma plataforma para apresentar produtos,
+encontrar oportunidades e aproximar vendedores,
+clientes e investidores.
+</p>
+
+<div class="search">
+
+<input
+id="homeSearch"
+placeholder="Pesquisar produtos..."
+onkeydown="if(event.key==='Enter')searchProducts()"
+>
+
+<button onclick="searchProducts()">
+Pesquisar
+</button>
+
+</div>
+
+<div class="actions">
+
+<button onclick="showPage('catalogo')">
+Ver catálogo
+</button>
+
+<button
+class="secondary"
+onclick="showPage('vendedor')"
+>
+Cadastrar produto
+</button>
+
+</div>
+
+</div>
+
+<div class="grid" id="homeProducts"></div>
+
+</section>
+
+<section id="catalogo" class="page hidden">
+
+<div class="panel">
+
+<h2>
+Catálogo de produtos
+</h2>
+
+<div class="search">
+
+<input
+id="catalogSearch"
+placeholder="Pesquisar por nome, categoria ou vendedor"
+oninput="renderProducts()"
+>
+
+<button onclick="renderProducts()">
+Buscar
+</button>
+
+</div>
+
+<div class="row">
+
+<select
+id="categoryFilter"
+onchange="renderProducts()"
+>
+
+<option value="">
+Todas as categorias
+</option>
+
+</select>
+
+<select
+id="sortFilter"
+onchange="renderProducts()"
+>
+
+<option value="">
+Mais recentes
+</option>
+
+<option value="priceAsc">
+Menor preço
+</option>
+
+<option value="priceDesc">
+Maior preço
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div
+class="grid"
+id="productGrid"
+></div>
+
+</section>
+
+<section id="vendedor" class="page hidden">
+
+<div class="panel">
+
+<h2>
+Cadastrar produto / anúncio
+</h2>
+
+<p class="muted">
+Os dados ficam guardados neste navegador.
+A ligação a um banco de dados online será necessária
+para uma versão com vários utilizadores.
+</p>
+
+<form id="productForm">
+
+<div class="row">
+
+<div>
+
+<label>
+Nome do produto
+</label>
+
+<input
+id="pName"
+required
+>
+
+</div>
+
+<div>
+
+<label>
+Categoria
+</label>
+
+<input
+id="pCategory"
+required
+placeholder="Ex.: móveis"
+>
+
+</div>
+
+<div>
+
+<label>
+Preço (Kz)
+</label>
+
+<input
+id="pPrice"
+type="number"
+min="0"
+required
+>
+
+</div>
+
+</div>
+
+<label>
+Descrição
+</label>
+
+<textarea
+id="pDesc"
+rows="4"
+required
+></textarea>
+
+<label>
+Nome do vendedor
+</label>
+
+<input
+id="pSeller"
+required
+>
+
+<label>
+WhatsApp (opcional)
+</label>
+
+<input
+id="pWhatsApp"
+placeholder="Ex.: 2449XXXXXXXX"
+>
+
+<label>
+Imagem do produto
+</label>
+
+<input
+id="pImage"
+type="file"
+accept="image/*"
+>
+
+<div class="actions">
+
+<button type="submit">
+Publicar produto
+</button>
+
+<button
+type="button"
+class="secondary"
+onclick="document.getElementById('productForm').reset()"
+>
+Limpar
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</section>
+
+<section id="investidor" class="page hidden">
+
+<div class="panel">
+
+<h2>
+Oportunidades de investimento
+</h2>
+
+<p>
+Escolha uma faixa para visualizar uma oportunidade demonstrativa.
+</p>
+
+<div class="grid">
+
+<button onclick="investment('3–4 mil Kz')">
+3–4 mil Kz
+</button>
+
+<button onclick="investment('5–9 mil Kz')">
+5–9 mil Kz
+</button>
+
+<button onclick="investment('10–19 mil Kz')">
+10–19 mil Kz
+</button>
+
+<button onclick="investment('50 mil Kz e acima')">
+50 mil Kz e acima
+</button>
+
+</div>
+
+<div
+id="investmentResult"
+class="panel hidden"
+></div>
+
+</div>
+
+</section>
+
+<section id="divulgacao" class="page hidden">
+
+<div class="panel">
+
+<h2>
+Programa de divulgação
+</h2>
+
+<p>
+Regra configurada:
+compartilhar uma publicação/produto
+com 5 pessoas por dia.
+Após validação das ações exigidas,
+a recompensa configurada é
+<b>100 Kz por dia</b>.
+</p>
+
+<div class="row">
+
+<div>
+
+<label>
+Partilhas de hoje
+</label>
+
+<input
+id="shares"
+type="number"
+min="0"
+value="0"
+oninput="updateShare()"
+>
+
+</div>
+
+<div>
+
+<label>
+Meta diária
+</label>
+
+<input
+value="5"
+disabled
+>
+
+</div>
+
+<div>
+
+<label>
+Recompensa
+</label>
+
+<input
+value="100 Kz/dia"
+disabled
+>
+
+</div>
+
+</div>
+
+<div
+id="shareResult"
+class="panel"
+>
+Ainda não atingiu a meta diária.
+</div>
+
+</div>
+
+</section>
+
+<section id="painel" class="page hidden">
+
+<div class="panel">
+
+<h2>
+Painel da plataforma
+</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<span class="badge">
+Produtos
+</span>
+
+<h2 id="statProducts">
+0
+</h2>
+
+<p class="muted">
+Guardados neste navegador
+</p>
+
+</div>
+
+<div class="card">
+
+<span class="badge">
+Armazenamento
+</span>
+
+<h2>
+Local
+</h2>
+
+<p class="muted">
+localStorage ativo
+</p>
+
+</div>
+
+<div class="card">
+
+<span class="badge">
+Estado
+</span>
+
+<h2 class="ok">
+Online
+</h2>
+
+<p class="muted">
+Interface carregada
+</p>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button onclick="testSystem()">
+Testar botões
+</button>
+
+<button
+class="secondary"
+onclick="clearProducts()"
+>
+Apagar produtos locais
+</button>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>
+Configuração central
+</h3>
+
+<p class="muted">
+Altere os dados no bloco CONFIG
+no início do JavaScript,
+sem procurar pelo código inteiro.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+Jogo da Liberdade — protótipo funcional
+</footer>
+
+<div id="status"></div>
+
+<script>
+
+/* =========================================================
+CONFIGURAÇÃO CENTRAL
+ALTERE OS DADOS DA PLATAFORMA AQUI
+========================================================= */
+
+const CONFIG = {
+
+nome: "Jogo da Liberdade",
+
+slogan:
+"Oportunidades, produtos e negócios",
+
+whatsapp: "",
+
+email: "",
+
+endereco:
+"Cabinda, Angola",
+
+nif: "",
+
+banco: "",
+
+conta: "",
+
+recompensaDiaria: 100,
+
+metaPartilhas: 5,
+
+moeda: "Kz"
+
+};
+
+/* =========================================================
+FIM DA CONFIGURAÇÃO
+========================================================= */
+
+const KEY =
+"jogo_liberdade_produtos_v1";
+
+let products =
+JSON.parse(
+localStorage.getItem(KEY) || "[]"
+);
+
+function save(){
+
+localStorage.setItem(
+KEY,
+JSON.stringify(products)
+);
+
+updateStats();
+
+}
+
+function status(msg,ok=true){
+
+const s =
+document.getElementById("status");
+
+s.textContent = msg;
+
+s.style.display = "block";
+
+s.style.background =
+ok ? "#33242b" : "#9d2020";
+
+setTimeout(
+() => s.style.display = "none",
+2500
+);
+
+}
+
+function showPage(id){
+
+document
+.querySelectorAll(".page")
+.forEach(
+x => x.classList.add("hidden")
+);
+
+document
+.getElementById(id)
+.classList.remove("hidden");
+
+if(id === "catalogo"){
+renderProducts();
+}
+
+if(id === "inicio"){
+renderHome();
+}
+
+updateStats();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function money(n){
+
+return Number(n || 0)
+.toLocaleString("pt-PT")
++ " "
++ CONFIG.moeda;
+
+}
+
+function escapeHtml(s){
+
+return String(s ?? "")
+.replace(
+/[&<>"']/g,
+m => ({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
+
+}
+
+function renderCard(p){
+
+const img =
+p.image ||
+"data:image/svg+xml;charset=UTF-8,"
++
+encodeURIComponent(
+`<svg xmlns="http://www.w3.org/2000/svg"
+width="600" height="400">
+<rect width="100%" height="100%"
+fill="#fdebf2"/>
+<text x="50%" y="50%"
+text-anchor="middle"
+font-family="Arial"
+font-size="28"
+fill="#9d174d">
+Sem imagem
+</text>
+</svg>`
+);
+
+const wa =
+p.whatsapp
+?
+`<button
+onclick="openWhatsApp(
+'${escapeHtml(p.whatsapp)}',
+'${escapeHtml(p.name)}')">
+WhatsApp
+</button>`
+:
+"";
+
+return `
+
+<article class="card">
+
+<img
+src="${img}"
+alt="${escapeHtml(p.name)}"
+>
+
+<span class="badge">
+${escapeHtml(p.category)}
+</span>
+
+<h3>
+${escapeHtml(p.name)}
+</h3>
+
+<div class="price">
+${money(p.price)}
+</div>
+
+<p class="muted">
+${escapeHtml(p.desc)}
+</p>
+
+<p class="muted">
+Vendedor:
+${escapeHtml(p.seller)}
+</p>
+
+<div class="actions">
+
+${wa}
+
+<button
+class="secondary"
+onclick="shareProduct('${p.id}')"
+>
+Partilhar
+</button>
+
+</div>
+
+</article>
+
+`;
+
+}
+
+function renderProducts(){
+
+const q =
+(
+document.getElementById(
+"catalogSearch"
+)?.value || ""
+)
+.toLowerCase()
+.trim();
+
+const cat =
+document.getElementById(
+"categoryFilter"
+)?.value || "";
+
+let arr =
+products.filter(
+p =>
+(
+!q ||
+[
+p.name,
+p.category,
+p.seller,
+p.desc
+]
+.join(" ")
+.toLowerCase()
+.includes(q)
+)
+&&
+(
+!cat ||
+p.category === cat
+)
+);
+
+const sort =
+document.getElementById(
+"sortFilter"
+)?.value;
+
+if(sort === "priceAsc"){
+
+arr.sort(
+(a,b) =>
+a.price - b.price
+);
+
+}
+
+if(sort === "priceDesc"){
+
+arr.sort(
+(a,b) =>
+b.price - a.price
+);
+
+}
+
+document.getElementById(
+"productGrid"
+).innerHTML =
+
+arr.length
+
+?
+
+arr
+.map(renderCard)
+.join("")
+
+:
+
+`
+<div class="panel">
+<p>
+Nenhum produto encontrado.
+</p>
+</div>
+`;
+
+const select =
+document.getElementById(
+"categoryFilter"
+);
+
+if(select){
+
+const old =
+select.value;
+
+select.innerHTML =
+'<option value="">Todas as categorias</option>'
++
+[
+...new Set(
+products.map(
+p => p.category
+)
+)
+]
+.sort()
+.map(
+c =>
+`<option>
+${escapeHtml(c)}
+</option>`
+)
+.join("");
+
+select.value = old;
+
+}
+
+}
+
+function renderHome(){
+
+document.getElementById(
+"homeProducts"
+).innerHTML =
+
+products
+.slice(-6)
+.reverse()
+.map(renderCard)
+.join("")
+
+||
+
+`
+<div class="panel">
+
+<p>
+Ainda não há produtos
+cadastrados.
+Seja o primeiro vendedor.
+</p>
+
+</div>
+`;
+
+}
+
+function searchProducts(){
+
+const q =
+document.getElementById(
+"homeSearch"
+).value;
+
+showPage("catalogo");
+
+setTimeout(() => {
+
+document.getElementById(
+"catalogSearch"
+).value = q;
+
+renderProducts();
+
+},0);
+
+}
+
+function updateStats(){
+
+document.getElementById(
+"statProducts"
+).textContent =
+products.length;
+
+}
+
+function updateShare(){
+
+const n =
+Number(
+document.getElementById(
+"shares"
+).value || 0
+);
+
+const r =
+document.getElementById(
+"shareResult"
+);
+
+if(
+n >= CONFIG.metaPartilhas
+){
+
+r.innerHTML =
+
+`
+<b class="ok">
+Meta atingida:
+</b>
+
+${n} partilhas.
+
+Recompensa configurada:
+
+<b>
+${CONFIG.recompensaDiaria}
+Kz/dia
+</b>
+
+, sujeita à validação
+das ações.
+`;
+
+}
+
+else{
+
+r.innerHTML =
+
+`
+Faltam
+
+<b>
+${Math.max(
+0,
+CONFIG.metaPartilhas - n
+)}
+</b>
+
+partilhas para atingir
+a meta diária de
+
+${CONFIG.metaPartilhas}.
+`;
+
+}
+
+}
+
+function investment(faixa){
+
+const r =
+document.getElementById(
+"investmentResult"
+);
+
+r.classList.remove(
+"hidden"
+);
+
+r.innerHTML =
+
+`
+<h3>
+Faixa selecionada:
+${faixa}
+</h3>
+
+<p>
+Esta área é um protótipo
+de apresentação.
+Não processa dinheiro real
+nem confirma investimentos.
+</p>
+`;
+
+}
+
+function openWhatsApp(
+number,
+name
+){
+
+let n =
+number.replace(
+/\D/g,
+""
+);
+
+if(
+n &&
+!n.startsWith("244")
+){
+
+n =
+"244" + n;
+
+}
+
+window.open(
+
+"https://wa.me/"
++
+n
++
+"?text="
++
+encodeURIComponent(
+"Olá, tenho interesse no produto: "
++
+name
+),
+
+"_blank"
+
+);
+
+}
+
+async function shareProduct(id){
+
+const p =
+products.find(
+x => x.id === id
+);
+
+if(!p){
+return;
+}
+
+const data = {
+
+title:p.name,
+
+text:
+p.name
++
+" — "
++
+money(p.price)
+
+};
+
+try{
+
+if(
+navigator.share
+){
+
+await navigator.share(
+data
+);
+
+}
+
+else{
+
+await navigator.clipboard
+.writeText(
+data.text
+);
+
+status(
+"Informação copiada para partilhar."
+);
+
+}
+
+}
+
+catch(e){}
+
+}
+
+document
+.getElementById(
+"productForm"
+)
+.addEventListener(
+"submit",
+e => {
+
+e.preventDefault();
+
+const file =
+document.getElementById(
+"pImage"
+).files[0];
+
+const make =
+image => {
+
+products.push({
+
+id:
+Date.now().toString(),
+
+name:
+pName.value.trim(),
+
+category:
+pCategory.value.trim(),
+
+price:
+Number(
+pPrice.value
+),
+
+desc:
+pDesc.value.trim(),
+
+seller:
+pSeller.value.trim(),
+
+whatsapp:
+pWhatsApp.value.trim(),
+
+image:
+image || "",
+
+created:
+Date.now()
+
+});
+
+save();
+
+e.target.reset();
+
+status(
+"Produto cadastrado com sucesso."
+);
+
+showPage(
+"catalogo"
+);
+
+};
+
+if(file){
+
+const reader =
+new FileReader();
+
+reader.onload =
+() => make(
+reader.result
+);
+
+reader.readAsDataURL(
+file
+);
+
+}
+
+else{
+
+make("");
+
+}
+
+}
+);
+
+function testSystem(){
+
+status(
+"Teste concluído: navegação, pesquisa, cadastro e armazenamento local estão ativos."
+);
+
+}
+
+function clearProducts(){
+
+if(
+confirm(
+"Apagar todos os produtos guardados neste navegador?"
+)
+){
+
+products = [];
+
+save();
+
+renderHome();
+
+renderProducts();
+
+status(
+"Produtos locais apagados."
+);
+
+}
+
+}
+
+document.getElementById(
+"brandName"
+).textContent =
+CONFIG.nome;
+
+document.getElementById(
+"brandTag"
+).textContent =
+CONFIG.slogan;
+
+updateStats();
+
+renderHome();
+
+</script>
+
+</body>
+</html>
+HTML
