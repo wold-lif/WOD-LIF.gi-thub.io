@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt">
 <head>
@@ -234,6 +233,11 @@ label{
   font-weight:700;
 }
 
+.role-badge{
+  background:#f3e8ff;
+  color:#6b21a8;
+}
+
 footer{
   text-align:center;
   padding:30px;
@@ -242,6 +246,7 @@ footer{
 }
 
 @media(max-width:600px){
+
   .top{
     align-items:flex-start;
   }
@@ -257,6 +262,7 @@ footer{
   .search button{
     width:100%;
   }
+
 }
 </style>
 </head>
@@ -355,6 +361,7 @@ Cadastrar produto
 
 </section>
 
+
 <section id="catalogo" class="page hidden">
 
 <div class="panel">
@@ -420,6 +427,7 @@ id="productGrid"
 
 </section>
 
+
 <section id="vendedor" class="page hidden">
 
 <div class="panel">
@@ -429,9 +437,9 @@ Cadastrar produto / anúncio
 </h2>
 
 <p class="muted">
-Os dados ficam guardados neste navegador.
-A ligação a um banco de dados online será necessária
-para uma versão com vários utilizadores.
+Aqui ficam os dados da publicação. O campo
+publisher identifica quem publicou o anúncio e
+role identifica o tipo de utilizador.
 </p>
 
 <form id="productForm">
@@ -482,6 +490,7 @@ required
 
 </div>
 
+
 <label>
 Descrição
 </label>
@@ -492,6 +501,11 @@ rows="4"
 required
 ></textarea>
 
+
+<div class="row">
+
+<div>
+
 <label>
 Nome do vendedor
 </label>
@@ -500,6 +514,35 @@ Nome do vendedor
 id="pSeller"
 required
 >
+
+</div>
+
+<div>
+
+<label>
+Função / Role
+</label>
+
+<select id="pRole">
+
+<option value="publisher">
+Publisher / Publicador
+</option>
+
+<option value="seller">
+Vendedor
+</option>
+
+<option value="business">
+Empresa / Negócio
+</option>
+
+</select>
+
+</div>
+
+</div>
+
 
 <label>
 WhatsApp (opcional)
@@ -510,6 +553,7 @@ id="pWhatsApp"
 placeholder="Ex.: 2449XXXXXXXX"
 >
 
+
 <label>
 Imagem do produto
 </label>
@@ -519,6 +563,7 @@ id="pImage"
 type="file"
 accept="image/*"
 >
+
 
 <div class="actions">
 
@@ -542,6 +587,7 @@ Limpar
 
 </section>
 
+
 <section id="investidor" class="page hidden">
 
 <div class="panel">
@@ -554,7 +600,7 @@ Oportunidades de investimento
 Escolha uma faixa para visualizar uma oportunidade demonstrativa.
 </p>
 
-<div class="grid">oi
+<div class="grid">
 
 <button onclick="investment('3–4 mil Kz')">
 3–4 mil Kz
@@ -582,6 +628,7 @@ class="panel hidden"
 </div>
 
 </section>
+
 
 <section id="divulgacao" class="page hidden">
 
@@ -657,6 +704,7 @@ Ainda não atingiu a meta diária.
 
 </section>
 
+
 <section id="painel" class="page hidden">
 
 <div class="panel">
@@ -678,26 +726,45 @@ Produtos
 </h2>
 
 <p class="muted">
-Guardados neste navegador
+Publicações carregadas
 </p>
 
 </div>
+
 
 <div class="card">
 
 <span class="badge">
-Armazenamento
+Publisher
 </span>
 
-<h2>
-Local
+<h2 id="statPublishers">
+0
 </h2>
 
 <p class="muted">
-localStorage ativo
+Publicadores registados
 </p>
 
 </div>
+
+
+<div class="card">
+
+<span class="badge">
+Role
+</span>
+
+<h2>
+Ativo
+</h2>
+
+<p class="muted">
+Sistema de funções preparado
+</p>
+
+</div>
+
 
 <div class="card">
 
@@ -717,10 +784,11 @@ Interface carregada
 
 </div>
 
+
 <div class="actions">
 
 <button onclick="testSystem()">
-Testar botões
+Testar sistema
 </button>
 
 <button
@@ -734,6 +802,7 @@ Apagar produtos locais
 
 </div>
 
+
 <div class="panel">
 
 <h3>
@@ -741,9 +810,8 @@ Configuração central
 </h3>
 
 <p class="muted">
-Altere os dados no bloco CONFIG
-no início do JavaScript,
-sem procurar pelo código inteiro.
+Os dados principais da plataforma ficam
+no bloco CONFIG abaixo.
 </p>
 
 </div>
@@ -752,721 +820,967 @@ sem procurar pelo código inteiro.
 
 </main>
 
+
 <footer>
 Jogo da Liberdade — protótipo funcional
 </footer>
 
+
 <div id="status"></div>
+
 
 <script>
 
 /* =========================================================
 CONFIGURAÇÃO CENTRAL
-ALTERE OS DADOS DA PLATAFORMA AQUI
 ========================================================= */
 
 const CONFIG = {
 
-nome: "Jogo da Liberdade",
+  nome: "Jogo da Liberdade",
 
-slogan:
-"Oportunidades, produtos e negócios",
+  slogan:
+  "Oportunidades, produtos e negócios",
 
-whatsapp: "",
+  whatsapp: "",
 
-email: "",
+  email: "",
 
-endereco:
-"Cabinda, Angola",
+  endereco:
+  "Cabinda, Angola",
 
-nif: "",
+  nif: "",
 
-banco: "",
+  banco: "",
 
-conta: "",
+  conta: "",
 
-recompensaDiaria: 100,
+  recompensaDiaria: 100,
 
-metaPartilhas: 5,
+  metaPartilhas: 5,
 
-moeda: "Kz"
+  moeda: "Kz",
+
+  /* =======================================================
+  SUPABASE
+  COLOCAREMOS OS DADOS REAIS DO TEU PROJETO AQUI
+  QUANDO TERMINARMOS A CONFIGURAÇÃO DO SUPABASE.
+  ======================================================= */
+
+  supabaseUrl: "",
+
+  supabaseAnonKey: ""
 
 };
+
 
 /* =========================================================
 FIM DA CONFIGURAÇÃO
 ========================================================= */
 
+
+/* =========================================================
+IDENTIDADE DA PUBLICAÇÃO
+========================================================= */
+
+const DEFAULT_ROLE = "publisher";
+
+const DEFAULT_PUBLISHER = "Jogo da Liberdade";
+
+
+/* =========================================================
+ARMAZENAMENTO LOCAL TEMPORÁRIO
+========================================================= */
+
 const KEY =
-"jogo_liberdade_produtos_v1";
+"jogo_liberdade_produtos_v2";
 
 let products =
 JSON.parse(
 localStorage.getItem(KEY) || "[]"
 );
 
+
+/* =========================================================
+SALVAR
+========================================================= */
+
 function save(){
 
-localStorage.setItem(
-KEY,
-JSON.stringify(products)
-);
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(products)
+  );
 
-updateStats();
+  updateStats();
 
 }
+
+
+/* =========================================================
+STATUS
+========================================================= */
 
 function status(msg,ok=true){
 
-const s =
-document.getElementById("status");
+  const s =
+  document.getElementById("status");
 
-s.textContent = msg;
+  s.textContent = msg;
 
-s.style.display = "block";
+  s.style.display = "block";
 
-s.style.background =
-ok ? "#33242b" : "#9d2020";
+  s.style.background =
+  ok ? "#33242b" : "#9d2020";
 
-setTimeout(
-() => s.style.display = "none",
-2500
-);
+  setTimeout(
+    () => s.style.display = "none",
+    2500
+  );
 
 }
+
+
+/* =========================================================
+NAVEGAÇÃO
+========================================================= */
 
 function showPage(id){
 
-document
-.querySelectorAll(".page")
-.forEach(
-x => x.classList.add("hidden")
-);
+  document
+  .querySelectorAll(".page")
+  .forEach(
+    x => x.classList.add("hidden")
+  );
 
-document
-.getElementById(id)
-.classList.remove("hidden");
+  const page =
+  document.getElementById(id);
 
-if(id === "catalogo"){
-renderProducts();
+  if(page){
+    page.classList.remove("hidden");
+  }
+
+  if(id === "catalogo"){
+    renderProducts();
+  }
+
+  if(id === "inicio"){
+    renderHome();
+  }
+
+  updateStats();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
 }
 
-if(id === "inicio"){
-renderHome();
-}
 
-updateStats();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
+/* =========================================================
+MOEDA
+========================================================= */
 
 function money(n){
 
-return Number(n || 0)
-.toLocaleString("pt-PT")
-+ " "
-+ CONFIG.moeda;
+  return Number(n || 0)
+  .toLocaleString("pt-PT")
+  + " "
+  + CONFIG.moeda;
 
 }
+
+
+/* =========================================================
+SEGURANÇA HTML
+========================================================= */
 
 function escapeHtml(s){
 
-return String(s ?? "")
-.replace(
-/[&<>"']/g,
-m => ({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-}[m])
-);
+  return String(s ?? "")
+  .replace(
+    /[&<>"']/g,
+    m => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[m])
+  );
 
 }
+
+
+/* =========================================================
+CARD DO PRODUTO
+========================================================= */
 
 function renderCard(p){
 
-const img =
-p.image ||
-"data:image/svg+xml;charset=UTF-8,"
-+
-encodeURIComponent(
-`<svg xmlns="http://www.w3.org/2000/svg"
-width="600" height="400">
-<rect width="100%" height="100%"
-fill="#fdebf2"/>
-<text x="50%" y="50%"
-text-anchor="middle"
-font-family="Arial"
-font-size="28"
-fill="#9d174d">
-Sem imagem
-</text>
-</svg>`
-);
+  const img =
+  p.image ||
+  "data:image/svg+xml;charset=UTF-8,"
+  +
+  encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg"
+  width="600" height="400">
+  <rect width="100%" height="100%"
+  fill="#fdebf2"/>
+  <text x="50%" y="50%"
+  text-anchor="middle"
+  font-family="Arial"
+  font-size="28"
+  fill="#9d174d">
+  Sem imagem
+  </text>
+  </svg>`
+  );
 
-const wa =
-p.whatsapp
-?
-`<button
-onclick="openWhatsApp(
-'${escapeHtml(p.whatsapp)}',
-'${escapeHtml(p.name)}')">
-WhatsApp
-</button>`
-:
-"";
 
-return `
+  const wa =
+  p.whatsapp
+  ?
+  `<button
+  onclick="openWhatsApp(
+  '${escapeHtml(p.whatsapp)}',
+  '${escapeHtml(p.name)}')">
+  WhatsApp
+  </button>`
+  :
+  "";
 
-<article class="card">
 
-<img
-src="${img}"
-alt="${escapeHtml(p.name)}"
->
+  return `
 
-<span class="badge">
-${escapeHtml(p.category)}
-</span>
+  <article class="card">
 
-<h3>
-${escapeHtml(p.name)}
-</h3>
+  <img
+  src="${img}"
+  alt="${escapeHtml(p.name)}"
+  >
 
-<div class="price">
-${money(p.price)}
-</div>
+  <span class="badge">
+  ${escapeHtml(p.category)}
+  </span>
 
-<p class="muted">
-${escapeHtml(p.desc)}
-</p>
+  <span class="badge role-badge">
+  ${escapeHtml(p.role || DEFAULT_ROLE)}
+  </span>
 
-<p class="muted">
-Vendedor:
-${escapeHtml(p.seller)}
-</p>
+  <h3>
+  ${escapeHtml(p.name)}
+  </h3>
 
-<div class="actions">
+  <div class="price">
+  ${money(p.price)}
+  </div>
 
-${wa}
+  <p class="muted">
+  ${escapeHtml(p.desc)}
+  </p>
 
-<button
-class="secondary"
-onclick="shareProduct('${p.id}')"
->
-Partilhar
-</button>
+  <p class="muted">
+  Vendedor:
+  ${escapeHtml(p.seller)}
+  </p>
 
-</div>
+  <p class="muted">
+  Publisher:
+  ${escapeHtml(p.publisher || DEFAULT_PUBLISHER)}
+  </p>
 
-</article>
+  <div class="actions">
 
-`;
+  ${wa}
+
+  <button
+  class="secondary"
+  onclick="shareProduct('${p.id}')"
+  >
+  Partilhar
+  </button>
+
+  </div>
+
+  </article>
+
+  `;
 
 }
+
+
+/* =========================================================
+RENDERIZAR PRODUTOS
+========================================================= */
 
 function renderProducts(){
 
-const q =
-(
-document.getElementById(
-"catalogSearch"
-)?.value || ""
-)
-.toLowerCase()
-.trim();
+  const q =
+  (
+    document.getElementById(
+      "catalogSearch"
+    )?.value || ""
+  )
+  .toLowerCase()
+  .trim();
 
-const cat =
-document.getElementById(
-"categoryFilter"
-)?.value || "";
 
-let arr =
-products.filter(
-p =>
-(
-!q ||
-[
-p.name,
-p.category,
-p.seller,
-p.desc
-]
-.join(" ")
-.toLowerCase()
-.includes(q)
-)
-&&
-(
-!cat ||
-p.category === cat
-)
-);
+  const cat =
+  document.getElementById(
+    "categoryFilter"
+  )?.value || "";
 
-const sort =
-document.getElementById(
-"sortFilter"
-)?.value;
 
-if(sort === "priceAsc"){
+  let arr =
+  products.filter(
+    p =>
+    (
+      !q ||
+      [
+        p.name,
+        p.category,
+        p.seller,
+        p.publisher,
+        p.role,
+        p.desc
+      ]
+      .join(" ")
+      .toLowerCase()
+      .includes(q)
+    )
+    &&
+    (
+      !cat ||
+      p.category === cat
+    )
+  );
 
-arr.sort(
-(a,b) =>
-a.price - b.price
-);
+
+  const sort =
+  document.getElementById(
+    "sortFilter"
+  )?.value;
+
+
+  if(sort === "priceAsc"){
+
+    arr.sort(
+      (a,b) =>
+      a.price - b.price
+    );
+
+  }
+
+
+  if(sort === "priceDesc"){
+
+    arr.sort(
+      (a,b) =>
+      b.price - a.price
+    );
+
+  }
+
+
+  document.getElementById(
+    "productGrid"
+  ).innerHTML =
+
+  arr.length
+
+  ?
+
+  arr
+  .map(renderCard)
+  .join("")
+
+  :
+
+  `
+  <div class="panel">
+  <p>
+  Nenhum produto encontrado.
+  </p>
+  </div>
+  `;
+
+
+  const select =
+  document.getElementById(
+    "categoryFilter"
+  );
+
+
+  if(select){
+
+    const old =
+    select.value;
+
+    select.innerHTML =
+    '<option value="">Todas as categorias</option>'
+    +
+    [
+      ...new Set(
+        products.map(
+          p => p.category
+        )
+      )
+    ]
+    .sort()
+    .map(
+      c =>
+      `<option value="${escapeHtml(c)}">
+      ${escapeHtml(c)}
+      </option>`
+    )
+    .join("");
+
+    select.value = old;
+
+  }
 
 }
 
-if(sort === "priceDesc"){
 
-arr.sort(
-(a,b) =>
-b.price - a.price
-);
-
-}
-
-document.getElementById(
-"productGrid"
-).innerHTML =
-
-arr.length
-
-?
-
-arr
-.map(renderCard)
-.join("")
-
-:
-
-`
-<div class="panel">
-<p>
-Nenhum produto encontrado.
-</p>
-</div>
-`;
-
-const select =
-document.getElementById(
-"categoryFilter"
-);
-
-if(select){
-
-const old =
-select.value;
-
-select.innerHTML =
-'<option value="">Todas as categorias</option>'
-+
-[
-...new Set(
-products.map(
-p => p.category
-)
-)
-]
-.sort()
-.map(
-c =>
-`<option>
-${escapeHtml(c)}
-</option>`
-)
-.join("");
-
-select.value = old;
-
-}
-
-}
+/* =========================================================
+INÍCIO
+========================================================= */
 
 function renderHome(){
 
-document.getElementById(
-"homeProducts"
-).innerHTML =
+  document.getElementById(
+    "homeProducts"
+  ).innerHTML =
 
-products
-.slice(-6)
-.reverse()
-.map(renderCard)
-.join("")
+  products
+  .slice(-6)
+  .reverse()
+  .map(renderCard)
+  .join("")
 
-||
+  ||
 
-`
-<div class="panel">
+  `
+  <div class="panel">
 
-<p>
-Ainda não há produtos
-cadastrados.
-Seja o primeiro vendedor.
-</p>
+  <p>
+  Ainda não há produtos
+  cadastrados.
+  Seja o primeiro vendedor.
+  </p>
 
-</div>
-`;
+  </div>
+  `;
 
 }
+
+
+/* =========================================================
+PESQUISA
+========================================================= */
 
 function searchProducts(){
 
-const q =
-document.getElementById(
-"homeSearch"
-).value;
+  const q =
+  document.getElementById(
+    "homeSearch"
+  ).value;
 
-showPage("catalogo");
+  showPage("catalogo");
 
-setTimeout(() => {
+  setTimeout(() => {
 
-document.getElementById(
-"catalogSearch"
-).value = q;
+    document.getElementById(
+      "catalogSearch"
+    ).value = q;
 
-renderProducts();
+    renderProducts();
 
-},0);
+  },0);
 
 }
+
+
+/* =========================================================
+ESTATÍSTICAS
+========================================================= */
 
 function updateStats(){
 
-document.getElementById(
-"statProducts"
-).textContent =
-products.length;
+  const stat =
+  document.getElementById(
+    "statProducts"
+  );
+
+  if(stat){
+    stat.textContent =
+    products.length;
+  }
+
+
+  const publishers =
+  new Set(
+    products.map(
+      p =>
+      p.publisher ||
+      DEFAULT_PUBLISHER
+    )
+  );
+
+
+  const statPublishers =
+  document.getElementById(
+    "statPublishers"
+  );
+
+  if(statPublishers){
+
+    statPublishers.textContent =
+    products.length
+    ? publishers.size
+    : 0;
+
+  }
 
 }
+
+
+/* =========================================================
+PROGRAMA DE DIVULGAÇÃO
+========================================================= */
 
 function updateShare(){
 
-const n =
-Number(
-document.getElementById(
-"shares"
-).value || 0
-);
+  const n =
+  Number(
+    document.getElementById(
+      "shares"
+    ).value || 0
+  );
 
-const r =
-document.getElementById(
-"shareResult"
-);
 
-if(
-n >= CONFIG.metaPartilhas
-){
+  const r =
+  document.getElementById(
+    "shareResult"
+  );
 
-r.innerHTML =
 
-`
-<b class="ok">
-Meta atingida:
-</b>
+  if(
+    n >= CONFIG.metaPartilhas
+  ){
 
-${n} partilhas.
+    r.innerHTML =
 
-Recompensa configurada:
+    `
+    <b class="ok">
+    Meta atingida:
+    </b>
 
-<b>
-${CONFIG.recompensaDiaria}
-Kz/dia
-</b>
+    ${n} partilhas.
 
-, sujeita à validação
-das ações.
-`;
+    Recompensa configurada:
+
+    <b>
+    ${CONFIG.recompensaDiaria}
+    Kz/dia
+    </b>
+
+    , sujeita à validação
+    das ações.
+    `;
+
+  }
+
+  else{
+
+    r.innerHTML =
+
+    `
+    Faltam
+
+    <b>
+    ${Math.max(
+      0,
+      CONFIG.metaPartilhas - n
+    )}
+    </b>
+
+    partilhas para atingir
+    a meta diária de
+
+    ${CONFIG.metaPartilhas}.
+    `;
+
+  }
 
 }
 
-else{
 
-r.innerHTML =
-
-`
-Faltam
-
-<b>
-${Math.max(
-0,
-CONFIG.metaPartilhas - n
-)}
-</b>
-
-partilhas para atingir
-a meta diária de
-
-${CONFIG.metaPartilhas}.
-`;
-
-}
-
-}
+/* =========================================================
+INVESTIMENTO
+========================================================= */
 
 function investment(faixa){
 
-const r =
-document.getElementById(
-"investmentResult"
-);
+  const r =
+  document.getElementById(
+    "investmentResult"
+  );
 
-r.classList.remove(
-"hidden"
-);
+  r.classList.remove(
+    "hidden"
+  );
 
-r.innerHTML =
+  r.innerHTML =
 
-`
-<h3>
-Faixa selecionada:
-${faixa}
-</h3>
+  `
+  <h3>
+  Faixa selecionada:
+  ${escapeHtml(faixa)}
+  </h3>
 
-<p>
-Esta área é um protótipo
-de apresentação.
-Não processa dinheiro real
-nem confirma investimentos.
-</p>
-`;
+  <p>
+  Esta área é um protótipo
+  de apresentação.
+  Não processa dinheiro real
+  nem confirma investimentos.
+  </p>
+  `;
 
 }
+
+
+/* =========================================================
+WHATSAPP
+========================================================= */
 
 function openWhatsApp(
-number,
-name
+  number,
+  name
 ){
 
-let n =
-number.replace(
-/\D/g,
-""
-);
+  let n =
+  String(number)
+  .replace(
+    /\D/g,
+    ""
+  );
 
-if(
-n &&
-!n.startsWith("244")
-){
 
-n =
-"244" + n;
+  if(
+    n &&
+    !n.startsWith("244")
+  ){
+
+    n =
+    "244" + n;
+
+  }
+
+
+  if(!n){
+    status(
+      "Número de WhatsApp inválido.",
+      false
+    );
+    return;
+  }
+
+
+  window.open(
+
+    "https://wa.me/"
+    +
+    n
+    +
+    "?text="
+    +
+    encodeURIComponent(
+      "Olá, tenho interesse no produto: "
+      +
+      name
+    ),
+
+    "_blank"
+
+  );
 
 }
 
-window.open(
 
-"https://wa.me/"
-+
-n
-+
-"?text="
-+
-encodeURIComponent(
-"Olá, tenho interesse no produto: "
-+
-name
-),
-
-"_blank"
-
-);
-
-}
+/* =========================================================
+PARTILHAR PRODUTO
+========================================================= */
 
 async function shareProduct(id){
 
-const p =
-products.find(
-x => x.id === id
-);
+  const p =
+  products.find(
+    x => x.id === id
+  );
 
-if(!p){
-return;
+
+  if(!p){
+    return;
+  }
+
+
+  const data = {
+
+    title:p.name,
+
+    text:
+    p.name
+    +
+    " — "
+    +
+    money(p.price)
+
+  };
+
+
+  try{
+
+    if(
+      navigator.share
+    ){
+
+      await navigator.share(
+        data
+      );
+
+    }
+
+    else{
+
+      await navigator.clipboard
+      .writeText(
+        data.text
+      );
+
+      status(
+        "Informação copiada para partilhar."
+      );
+
+    }
+
+  }
+
+  catch(e){}
+
 }
 
-const data = {
 
-title:p.name,
-
-text:
-p.name
-+
-" — "
-+
-money(p.price)
-
-};
-
-try{
-
-if(
-navigator.share
-){
-
-await navigator.share(
-data
-);
-
-}
-
-else{
-
-await navigator.clipboard
-.writeText(
-data.text
-);
-
-status(
-"Informação copiada para partilhar."
-);
-
-}
-
-}
-
-catch(e){}
-
-}
+/* =========================================================
+PUBLICAR PRODUTO
+ROLE + PUBLISHER
+========================================================= */
 
 document
 .getElementById(
-"productForm"
+  "productForm"
 )
 .addEventListener(
-"submit",
-e => {
+  "submit",
+  e => {
 
-e.preventDefault();
+    e.preventDefault();
 
-const file =
-document.getElementById(
-"pImage"
-).files[0];
 
-const make =
-image => {
+    const file =
+    document.getElementById(
+      "pImage"
+    ).files[0];
 
-products.push({
 
-id:
-Date.now().toString(),
+    const make =
+    image => {
 
-name:
-pName.value.trim(),
+      const role =
+      document.getElementById(
+        "pRole"
+      ).value
+      ||
+      DEFAULT_ROLE;
 
-category:
-pCategory.value.trim(),
 
-price:
-Number(
-pPrice.value
-),
+      const seller =
+      document.getElementById(
+        "pSeller"
+      ).value.trim();
 
-desc:
-pDesc.value.trim(),
 
-seller:
-pSeller.value.trim(),
+      const publication = {
 
-whatsapp:
-pWhatsApp.value.trim(),
+        id:
+        Date.now().toString(),
 
-image:
-image || "",
+        name:
+        document.getElementById(
+          "pName"
+        ).value.trim(),
 
-created:
-Date.now()
+        category:
+        document.getElementById(
+          "pCategory"
+        ).value.trim(),
 
-});
+        price:
+        Number(
+          document.getElementById(
+            "pPrice"
+          ).value
+        ),
 
-save();
+        desc:
+        document.getElementById(
+          "pDesc"
+        ).value.trim(),
 
-e.target.reset();
+        seller:
+        seller,
 
-status(
-"Produto cadastrado com sucesso."
+        whatsapp:
+        document.getElementById(
+          "pWhatsApp"
+        ).value.trim(),
+
+        image:
+        image || "",
+
+        /* =========================================
+        CAMPOS IMPORTANTES PARA O NOSSO BANCO
+        ========================================= */
+
+        role:https://labwcrdrbospldbexixs.supabase.co
+        role,
+
+        publisher:sb_publishable_RZruzRwYltahRO0aX9XJjw_IuNzlyCX
+        seller || DEFAULT_PUBLISHER,
+
+        created:
+        Date.now(),
+
+        status:
+        "published"
+
+      };
+
+
+      products.push(
+        publication
+      );
+
+
+      save();
+
+
+      e.target.reset();
+
+
+      status(
+        "Produto publicado com sucesso."
+      );
+
+
+      showPage(
+        "catalogo"
+      );
+
+    };
+
+
+    if(file){
+
+      const reader =
+      new FileReader();
+
+
+      reader.onload =
+      () => make(
+        reader.result
+      );
+
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+
+    else{
+
+      make("");
+
+    }
+
+  }
 );
 
-showPage(
-"catalogo"
-);
 
-};
-
-if(file){
-
-const reader =
-new FileReader();
-
-reader.onload =
-() => make(
-reader.result
-);
-
-reader.readAsDataURL(
-file
-);
-
-}
-
-else{
-
-make("");
-
-}
-
-}
-);
+/* =========================================================
+TESTE DO SISTEMA
+========================================================= */
 
 function testSystem(){
 
-status(
-"Teste concluído: navegação, pesquisa, cadastro e armazenamento local estão ativos."
-);
+  status(
+    "Teste concluído: navegação, pesquisa, role, publisher, cadastro e armazenamento local estão ativos."
+  );
 
 }
+
+
+/* =========================================================
+APAGAR PRODUTOS
+========================================================= */
 
 function clearProducts(){
 
-if(
-confirm(
-"Apagar todos os produtos guardados neste navegador?"
-)
-){
+  if(
+    confirm(
+      "Apagar todos os produtos guardados neste navegador?"
+    )
+  ){
 
-products = [];
+    products = [];
 
-save();
+    save();
 
-renderHome();
+    renderHome();
 
-renderProducts();
+    renderProducts();
 
-status(
-"Produtos locais apagados."
-);
+    status(
+      "Produtos locais apagados."
+    );
+
+  }
 
 }
 
-}
+
+/* =========================================================
+INFORMAÇÕES DA PLATAFORMA
+========================================================= */
 
 document.getElementById(
-"brandName"
+  "brandName"
 ).textContent =
 CONFIG.nome;
 
+
 document.getElementById(
-"brandTag"
+  "brandTag"
 ).textContent =
 CONFIG.slogan;
+
+
+/* =========================================================
+INICIALIZAÇÃO
+========================================================= */
 
 updateStats();
 
@@ -1476,4 +1790,3 @@ renderHome();
 
 </body>
 </html>
-HTML
