@@ -1751,7 +1751,7 @@ function clearProducts(){
 
     renderProducts();
 
-    status(
+    
       "Produtos locais apagados."
     );
 
@@ -1780,10 +1780,86 @@ CONFIG.slogan;
 INICIALIZAÇÃO
 ========================================================= */
 
-updateStats();
 
 renderHome();
+function showInvestmentData(){
 
+  const input =
+    document.getElementById("investmentAmount");
+
+  const result =
+    document.getElementById("investmentResult");
+
+  const amount =
+    Number(input.value);
+
+  if(!amount || amount <= 0){
+
+    result.classList.remove("hidden");
+
+    result.innerHTML = `
+      <div class="panel">
+        <h3>Digite um valor válido</h3>
+        <p>
+          Informe o valor que pretende investir em Kz.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  result.classList.remove("hidden");
+
+  result.innerHTML = `
+    <div class="panel">
+
+      <h2>Dados para investimento</h2>
+
+      <p>
+        <strong>Valor informado:</strong>
+        ${amount.toLocaleString("pt-PT")} Kz
+      </p>
+
+      <hr style="margin:18px 0;">
+
+      <p>
+        <strong>Banco:</strong> BFA
+      </p>
+
+      <p>
+        <strong>Titular:</strong>
+        Albertina da Gloria Conde
+      </p>
+
+      <p>
+        <strong>IBAN:</strong>
+        0006.0000.7819.2094.30176
+      </p>
+
+      <p>
+        <strong>N.º da conta:</strong>
+        27819.2094.30176
+      </p>
+
+      <p>
+        <strong>Express:</strong>
+        976383060
+      </p>
+
+      <hr style="margin:18px 0;">
+
+      <p>
+        <strong>Manda o comprovativo por WhatsApp:</strong>
+      </p>
+
+      <p style="font-size:22px;font-weight:800;">
+        943 257 265
+      </p>
+
+    </div>
+  `;
+}
 </script>
 
 </body>
