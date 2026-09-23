@@ -18,7 +18,9 @@
   --erro:#c62828;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -68,7 +70,8 @@ nav button{
   white-space:nowrap;
 }
 
-button,.btn{
+button,
+.btn{
   border:0;
   border-radius:10px;
   padding:11px 14px;
@@ -126,7 +129,9 @@ main{
   flex:1;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
   width:100%;
   padding:12px;
   border:1px solid var(--borda);
@@ -238,6 +243,35 @@ label{
   color:#6b21a8;
 }
 
+.investment-box{
+  max-width:520px;
+  margin:20px auto;
+}
+
+.bank-data{
+  border:2px solid var(--rosa);
+  border-radius:15px;
+  padding:18px;
+  background:#fff7fa;
+}
+
+.bank-line{
+  padding:9px 0;
+  border-bottom:1px solid var(--borda);
+}
+
+.bank-line:last-child{
+  border-bottom:0;
+}
+
+.whatsapp-number{
+  font-size:25px;
+  font-weight:800;
+  color:var(--rosa);
+  text-align:center;
+  margin:8px 0;
+}
+
 footer{
   text-align:center;
   padding:30px;
@@ -295,7 +329,7 @@ Cadastrar produto
 </button>
 
 <button onclick="showPage('investidor')">
-Investimento
+Investir
 </button>
 
 <button onclick="showPage('divulgacao')">
@@ -310,7 +344,9 @@ Painel
 
 </header>
 
+
 <main>
+
 
 <section id="inicio" class="page">
 
@@ -351,6 +387,10 @@ class="secondary"
 onclick="showPage('vendedor')"
 >
 Cadastrar produto
+</button>
+
+<button onclick="showPage('investidor')">
+Investir
 </button>
 
 </div>
@@ -437,9 +477,7 @@ Cadastrar produto / anúncio
 </h2>
 
 <p class="muted">
-Aqui ficam os dados da publicação. O campo
-publisher identifica quem publicou o anúncio e
-role identifica o tipo de utilizador.
+Publique o seu produto na plataforma.
 </p>
 
 <form id="productForm">
@@ -545,12 +583,12 @@ Empresa / Negócio
 
 
 <label>
-WhatsApp (opcional)
+WhatsApp
 </label>
 
 <input
 id="pWhatsApp"
-placeholder="Ex.: 2449XXXXXXXX"
+placeholder="Ex.: 943257265"
 >
 
 
@@ -593,29 +631,33 @@ Limpar
 <div class="panel">
 
 <h2>
-Oportunidades de investimento
+Investir
 </h2>
 
 <p>
-Escolha uma faixa para visualizar uma oportunidade demonstrativa.
+Digite o valor que pretende investir para continuar.
 </p>
 
-<div class="grid">
+<div class="investment-box">
 
-<button onclick="investment('3–4 mil Kz')">
-3–4 mil Kz
-</button>
+<label for="investmentAmount">
+Valor do investimento (Kz)
+</label>
 
-<button onclick="investment('5–9 mil Kz')">
-5–9 mil Kz
-</button>
+<input
+id="investmentAmount"
+type="number"
+inputmode="numeric"
+min="1"
+placeholder="Ex.: 10000"
+>
 
-<button onclick="investment('10–19 mil Kz')">
-10–19 mil Kz
-</button>
-
-<button onclick="investment('50 mil Kz e acima')">
-50 mil Kz e acima
+<button
+type="button"
+onclick="showInvestmentData()"
+style="width:100%;margin-top:12px;"
+>
+CONTINUAR
 </button>
 
 </div>
@@ -639,8 +681,7 @@ Programa de divulgação
 </h2>
 
 <p>
-Regra configurada:
-compartilhar uma publicação/produto
+Compartilhe uma publicação/produto
 com 5 pessoas por dia.
 Após validação das ações exigidas,
 a recompensa configurada é
@@ -784,18 +825,10 @@ Interface carregada
 
 </div>
 
-
 <div class="actions">
 
 <button onclick="testSystem()">
 Testar sistema
-</button>
-
-<button
-class="secondary"
-onclick="clearProducts()"
->
-Apagar produtos locais
 </button>
 
 </div>
@@ -811,7 +844,7 @@ Configuração central
 
 <p class="muted">
 Os dados principais da plataforma ficam
-no bloco CONFIG abaixo.
+centralizados no bloco CONFIG.
 </p>
 
 </div>
@@ -822,7 +855,7 @@ no bloco CONFIG abaixo.
 
 
 <footer>
-Jogo da Liberdade — protótipo funcional
+Jogo da Liberdade — Oportunidades, produtos e negócios
 </footer>
 
 
@@ -842,7 +875,7 @@ const CONFIG = {
   slogan:
   "Oportunidades, produtos e negócios",
 
-  whatsapp: "",
+  whatsapp: "943257265",
 
   email: "",
 
@@ -851,9 +884,19 @@ const CONFIG = {
 
   nif: "",
 
-  banco: "",
+  banco: "BFA",
 
-  conta: "",
+  titular:
+  "Albertina da Gloria Conde",
+
+  iban:
+  "0006.0000.7819.2094.30176",
+
+  conta:
+  "27819.2094.30176",
+
+  express:
+  "976383060",
 
   recompensaDiaria: 100,
 
@@ -861,34 +904,28 @@ const CONFIG = {
 
   moeda: "Kz",
 
-  /* =======================================================
-  SUPABASE
-  COLOCAREMOS OS DADOS REAIS DO TEU PROJETO AQUI
-  QUANDO TERMINARMOS A CONFIGURAÇÃO DO SUPABASE.
-  ======================================================= */
+  supabaseUrl:
+  "https://labwcrdrbospldbexixs.supabase.co",
 
- supabaseUrl: "https://labwcrdrbospldbexixs.supabase.co",
-supabaseAnonKey: "sb_publishable_RZruzRwYltahRO0aX9XJjw_IuNzlyCX",
+  supabaseAnonKey:
+  "sb_publishable_RZruzRwYltahRO0aX9XJjw_IuNzlyCX"
 
 };
 
 
 /* =========================================================
-FIM DA CONFIGURAÇÃO
+IDENTIDADE
 ========================================================= */
+
+const DEFAULT_ROLE =
+"publisher";
+
+const DEFAULT_PUBLISHER =
+"Jogo da Liberdade";
 
 
 /* =========================================================
-IDENTIDADE DA PUBLICAÇÃO
-========================================================= */
-
-const DEFAULT_ROLE = "publisher";
-
-const DEFAULT_PUBLISHER = "Jogo da Liberdade";
-
-
-/* =========================================================
-ARMAZENAMENTO LOCAL TEMPORÁRIO
+ARMAZENAMENTO
 ========================================================= */
 
 const KEY =
@@ -925,6 +962,8 @@ function status(msg,ok=true){
   const s =
   document.getElementById("status");
 
+  if(!s) return;
+
   s.textContent = msg;
 
   s.style.display = "block";
@@ -933,7 +972,9 @@ function status(msg,ok=true){
   ok ? "#33242b" : "#9d2020";
 
   setTimeout(
-    () => s.style.display = "none",
+    () => {
+      s.style.display = "none";
+    },
     2500
   );
 
@@ -1183,9 +1224,15 @@ function renderProducts(){
   }
 
 
+  const grid =
   document.getElementById(
     "productGrid"
-  ).innerHTML =
+  );
+
+  if(!grid) return;
+
+
+  grid.innerHTML =
 
   arr.length
 
@@ -1227,6 +1274,7 @@ function renderProducts(){
         )
       )
     ]
+    .filter(Boolean)
     .sort()
     .map(
       c =>
@@ -1249,9 +1297,14 @@ INÍCIO
 
 function renderHome(){
 
+  const home =
   document.getElementById(
     "homeProducts"
-  ).innerHTML =
+  );
+
+  if(!home) return;
+
+  home.innerHTML =
 
   products
   .slice(-6)
@@ -1285,15 +1338,20 @@ function searchProducts(){
   const q =
   document.getElementById(
     "homeSearch"
-  ).value;
+  )?.value || "";
 
   showPage("catalogo");
 
   setTimeout(() => {
 
+    const input =
     document.getElementById(
       "catalogSearch"
-    ).value = q;
+    );
+
+    if(input){
+      input.value = q;
+    }
 
     renderProducts();
 
@@ -1347,69 +1405,68 @@ function updateStats(){
 
 
 /* =========================================================
-PROGRAMA DE DIVULGAÇÃO
+DIVULGAÇÃO
 ========================================================= */
 
 function updateShare(){
 
-  const n =
-  Number(
-    document.getElementById(
-      "shares"
-    ).value || 0
-  );
-
+  const input =
+  document.getElementById("shares");
 
   const r =
-  document.getElementById(
-    "shareResult"
-  );
+  document.getElementById("shareResult");
+
+  if(!input || !r) return;
+
+  const n =
+  Number(input.value || 0);
 
 
-  if(
-    n >= CONFIG.metaPartilhas
-  ){
+  if(n >= CONFIG.metaPartilhas){
 
-    r.innerHTML =
+    r.innerHTML = `
 
-    `
-    <b class="ok">
-    Meta atingida:
-    </b>
+      <b class="ok">
+      Meta atingida!
+      </b>
 
-    ${n} partilhas.
+      <p>
+      ${n} partilhas realizadas.
+      </p>
 
-    Recompensa configurada:
+      <p>
+      Recompensa configurada:
+      <b>
+      ${CONFIG.recompensaDiaria} Kz/dia
+      </b>
+      </p>
 
-    <b>
-    ${CONFIG.recompensaDiaria}
-    Kz/dia
-    </b>
+      <p class="muted">
+      Sujeita à validação das ações.
+      </p>
 
-    , sujeita à validação
-    das ações.
     `;
 
   }
 
   else{
 
-    r.innerHTML =
+    r.innerHTML = `
 
-    `
-    Faltam
+      Faltam
 
-    <b>
-    ${Math.max(
-      0,
-      CONFIG.metaPartilhas - n
-    )}
-    </b>
+      <b>
+      ${Math.max(
+        0,
+        CONFIG.metaPartilhas - n
+      )}
+      </b>
 
-    partilhas para atingir
-    a meta diária de
+      partilhas para atingir
+      a meta diária de
 
-    ${CONFIG.metaPartilhas}.
+      ${CONFIG.metaPartilhas}.
+
     `;
 
   }
@@ -1421,34 +1478,132 @@ function updateShare(){
 INVESTIMENTO
 ========================================================= */
 
-function investment(faixa){
+function showInvestmentData(){
 
-  const r =
+  const input =
+  document.getElementById(
+    "investmentAmount"
+  );
+
+  const result =
   document.getElementById(
     "investmentResult"
   );
 
-  r.classList.remove(
+
+  if(!input || !result){
+    return;
+  }
+
+
+  const amount =
+  Number(input.value);
+
+
+  if(!amount || amount <= 0){
+
+    result.classList.remove(
+      "hidden"
+    );
+
+    result.innerHTML = `
+
+      <div class="panel">
+
+        <h3>
+        Digite um valor válido
+        </h3>
+
+        <p>
+        Informe o valor que pretende investir em Kz.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  result.classList.remove(
     "hidden"
   );
 
-  r.innerHTML =
 
-  `
-  <h3>
-  Faixa selecionada:
-  ${escapeHtml(faixa)}
-  </h3>
+  result.innerHTML = `
 
-  <p>e 
-enveste o seu dinhero e ve a crescer<p>
+    <div class="bank-data">
+
+      <h2>
+      Dados para investimento
+      </h2>
+
+      <div class="bank-line">
+        <strong>Valor informado:</strong><br>
+        ${amount.toLocaleString("pt-PT")} Kz
+      </div>
+
+      <div class="bank-line">
+        <strong>Banco:</strong><br>
+        ${CONFIG.banco}
+      </div>
+
+      <div class="bank-line">
+        <strong>Titular:</strong><br>
+        ${CONFIG.titular}
+      </div>
+
+      <div class="bank-line">
+        <strong>IBAN:</strong><br>
+        ${CONFIG.iban}
+      </div>
+
+      <div class="bank-line">
+        <strong>N.º da conta:</strong><br>
+        ${CONFIG.conta}
+      </div>
+
+      <div class="bank-line">
+        <strong>Express:</strong><br>
+        ${CONFIG.express}
+      </div>
+
+      <div style="margin-top:20px;text-align:center;">
+
+        <p>
+        <strong>
+        Manda o comprovativo por WhatsApp:
+        </strong>
+        </p>
+
+        <div class="whatsapp-number">
+        ${CONFIG.whatsapp}
+        </div>
+
+        <p class="muted">
+        Depois de realizar o pagamento,
+        envie o comprovativo para confirmação.
+        </p>
+
+        <button
+        onclick="openInvestmentWhatsApp()"
+        style="width:100%;margin-top:10px;"
+        >
+        Enviar comprovativo pelo WhatsApp
+        </button>
+
+      </div>
+
+    </div>
+
   `;
 
 }
 
 
 /* =========================================================
-WHATSAPP
+WHATSAPP DOS PRODUTOS
 ========================================================= */
 
 function openWhatsApp(
@@ -1476,10 +1631,12 @@ function openWhatsApp(
 
 
   if(!n){
+
     status(
       "Número de WhatsApp inválido.",
       false
     );
+
     return;
   }
 
@@ -1497,6 +1654,37 @@ function openWhatsApp(
       +
       name
     ),
+
+    "_blank"
+
+  );
+
+}
+
+
+/* =========================================================
+WHATSAPP DO INVESTIMENTO
+========================================================= */
+
+function openInvestmentWhatsApp(){
+
+  const number =
+  "244" + CONFIG.whatsapp;
+
+
+  const message =
+  "Olá, enviei o comprovativo do meu investimento no Jogo da Liberdade.";
+
+
+  window.open(
+
+    "https://wa.me/"
+    +
+    number
+    +
+    "?text="
+    +
+    encodeURIComponent(message),
 
     "_blank"
 
@@ -1538,22 +1726,16 @@ async function shareProduct(id){
 
   try{
 
-    if(
-      navigator.share
-    ){
+    if(navigator.share){
 
-      await navigator.share(
-        data
-      );
+      await navigator.share(data);
 
     }
 
     else{
 
       await navigator.clipboard
-      .writeText(
-        data.text
-      );
+      .writeText(data.text);
 
       status(
         "Informação copiada para partilhar."
@@ -1570,198 +1752,167 @@ async function shareProduct(id){
 
 /* =========================================================
 PUBLICAR PRODUTO
-ROLE + PUBLISHER
 ========================================================= */
 
-document
-.getElementById(
+const productForm =
+document.getElementById(
   "productForm"
-)
-.addEventListener(
-  "submit",
-  e => {
-
-    e.preventDefault();
+);
 
 
-    const file =
-    document.getElementById(
-      "pImage"
-    ).files[0];
+if(productForm){
+
+  productForm.addEventListener(
+    "submit",
+    e => {
+
+      e.preventDefault();
 
 
-    const make =
-    image => {
-
-      const role =
+      const file =
       document.getElementById(
-        "pRole"
-      ).value
-      ||
-      DEFAULT_ROLE;
+        "pImage"
+      ).files[0];
 
 
-      const seller =
-      document.getElementById(
-        "pSeller"
-      ).value.trim();
+      const make =
+      image => {
 
-
-      const publication = {
-
-        id:
-        Date.now().toString(),
-
-        name:
+        const role =
         document.getElementById(
-          "pName"
-        ).value.trim(),
+          "pRole"
+        ).value
+        ||
+        DEFAULT_ROLE;
 
-        category:
+
+        const seller =
         document.getElementById(
-          "pCategory"
-        ).value.trim(),
+          "pSeller"
+        ).value.trim();
 
-        price:
-        Number(
+
+        const publication = {
+
+          id:
+          Date.now().toString(),
+
+          name:
           document.getElementById(
-            "pPrice"
-          ).value
-        ),
+            "pName"
+          ).value.trim(),
 
-        desc:
-        document.getElementById(
-          "pDesc"
-        ).value.trim(),
+          category:
+          document.getElementById(
+            "pCategory"
+          ).value.trim(),
 
-        seller:
-        seller,
+          price:
+          Number(
+            document.getElementById(
+              "pPrice"
+            ).value
+          ),
 
-        whatsapp:
-        document.getElementById(
-          "pWhatsApp"
-        ).value.trim(),
+          desc:
+          document.getElementById(
+            "pDesc"
+          ).value.trim(),
 
-        image:
-        image || "",
+          seller:
+          seller,
 
-        /* =========================================
-        CAMPOS IMPORTANTES PARA O NOSSO BANCO
-        ========================================= */
+          whatsapp:
+          document.getElementById(
+            "pWhatsApp"
+          ).value.trim(),
 
-      role: role,
-publisher: seller || DEFAULT_PUBLISHER,
+          image:
+          image || "",
 
-created:
-Date.now(),  
+          role:
+          role,
+
+          publisher:
+          seller || DEFAULT_PUBLISHER,
+
+          created:
+          Date.now(),
+
+          status:
+          "published"
+
+        };
 
 
-        
+        products.push(
+          publication
+        );
 
-      
-        
 
-        status:
-        "published"
+        save();
+
+
+        e.target.reset();
+
+
+        status(
+          "Produto publicado com sucesso."
+        );
+
+
+        showPage(
+          "catalogo"
+        );
 
       };
 
 
-      products.push(
-        publication
-      );
+      if(file){
+
+        const reader =
+        new FileReader();
 
 
-      save();
+        reader.onload =
+        () => make(
+          reader.result
+        );
 
 
-      e.target.reset();
+        reader.readAsDataURL(
+          file
+        );
 
+      }
 
-      status(
-        "Produto publicado com sucesso."
-      );
+      else{
 
+        make("");
 
-      showPage(
-        "catalogo"
-      );
-
-    };
-
-
-    if(file){
-
-      const reader =
-      new FileReader();
-
-
-      reader.onload =
-      () => make(
-        reader.result
-      );
-
-
-      reader.readAsDataURL(
-        file
-      );
+      }
 
     }
-
-    else{
-
-      make("");
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-TESTE DO SISTEMA
-========================================================= */
-
-function testSystem(){
-
-  status(
-    "Teste concluído: navegação, pesquisa, role, publisher, cadastro e armazenamento local estão ativos."
   );
 
 }
 
 
 /* =========================================================
-APAGAR PRODUTOS
+TESTAR SISTEMA
 ========================================================= */
 
-function clearProducts(){
+function testSystem(){
 
-  if(
-    confirm(
-      "Apagar todos os produtos guardados neste navegador?"
-    )
-  ){
-
-    products = [];
-
-    save();
-
-    renderHome();
-
-    renderProducts();
-
-    
-      "Produtos locais apagados."
-    );
-
-  }
+  status(
+    "Sistema funcionando: navegação, pesquisa, cadastro, publicação, investimento e partilha ativos."
+  );
 
 }
 
 
 /* =========================================================
-INFORMAÇÕES DA PLATAFORMA
+IDENTIDADE DA PLATAFORMA
 ========================================================= */
 
 document.getElementById(
@@ -1780,86 +1931,10 @@ CONFIG.slogan;
 INICIALIZAÇÃO
 ========================================================= */
 
-
 renderHome();
-function showInvestmentData(){
 
-  const input =
-    document.getElementById("investmentAmount");
+updateStats();
 
-  const result =
-    document.getElementById("investmentResult");
-
-  const amount =
-    Number(input.value);
-
-  if(!amount || amount <= 0){
-
-    result.classList.remove("hidden");
-
-    result.innerHTML = `
-      <div class="panel">
-        <h3>Digite um valor válido</h3>
-        <p>
-          Informe o valor que pretende investir em Kz.
-        </p>
-      </div>
-    `;
-
-    return;
-  }
-
-  result.classList.remove("hidden");
-
-  result.innerHTML = `
-    <div class="panel">
-
-      <h2>Dados para investimento</h2>
-
-      <p>
-        <strong>Valor informado:</strong>
-        ${amount.toLocaleString("pt-PT")} Kz
-      </p>
-
-      <hr style="margin:18px 0;">
-
-      <p>
-        <strong>Banco:</strong> BFA
-      </p>
-
-      <p>
-        <strong>Titular:</strong>
-        Albertina da Gloria Conde
-      </p>
-
-      <p>
-        <strong>IBAN:</strong>
-        0006.0000.7819.2094.30176
-      </p>
-
-      <p>
-        <strong>N.º da conta:</strong>
-        27819.2094.30176
-      </p>
-
-      <p>
-        <strong>Express:</strong>
-        976383060
-      </p>
-
-      <hr style="margin:18px 0;">
-
-      <p>
-        <strong>Manda o comprovativo por WhatsApp:</strong>
-      </p>
-
-      <p style="font-size:22px;font-weight:800;">
-        943 257 265
-      </p>
-
-    </div>
-  `;
-}
 </script>
 
 </body>
